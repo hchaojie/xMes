@@ -12,7 +12,7 @@
 
 | 里程碑 | 内容 | 状态 |
 | --- | --- | --- |
-| M1 | 平台骨架（pig/vben）+ 车间建模 + 主数据 | 🚧 进行中：工程骨架与车间建模切片已完成 |
+| M1 | 平台骨架（pig/vben）+ 车间建模 + 主数据 | 🚧 代码完成（建模 + 物料/BOM/工作计划），待环境联调 |
 | M2 | 工单 + 排程 + 报工 + 工位终端 | ⏳ 未开始 |
 | M3 | 质量 + 追溯 + 看板 + ERP 联调 | ⏳ 未开始 |
 
@@ -27,8 +27,9 @@ xMes/
 │   │   ├── xmes-core-api    实体与对外 API 定义
 │   │   └── xmes-core-biz    平台与建模服务（端口 4100）
 │   └── db/
-│       ├── pig.sql          pig 系统表与基础数据（先执行）
-│       └── xmes_core.sql    MES 建模表 + 菜单权限（后执行）
+│       ├── pig.sql              pig 系统表与基础数据（先执行）
+│       ├── xmes_core.sql        车间建模表 + 菜单权限
+│       └── xmes_masterdata.sql  物料/BOM/工作计划表 + 菜单权限
 └── frontend/    前端：vue-vben-admin v5 monorepo（保留 apps/web-antd 作为管理端）
     └── apps/web-antd/src/{api,views,router/routes/modules}/mes/...
 ```

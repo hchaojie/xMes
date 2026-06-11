@@ -39,6 +39,44 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    meta: {
+      icon: 'lucide:database',
+      order: 11,
+      title: '制造主数据',
+    },
+    name: 'MesMasterdata',
+    path: '/mes/masterdata',
+    children: [
+      {
+        name: 'MesMasterdataMaterial',
+        path: 'material',
+        component: () => import('#/views/mes/masterdata/material/index.vue'),
+        meta: {
+          icon: 'lucide:package',
+          title: '物料管理',
+        },
+      },
+      {
+        name: 'MesMasterdataBom',
+        path: 'bom',
+        component: () => import('#/views/mes/masterdata/bom/index.vue'),
+        meta: {
+          icon: 'lucide:list-tree',
+          title: 'BOM 管理',
+        },
+      },
+      {
+        name: 'MesMasterdataRouting',
+        path: 'routing',
+        component: () => import('#/views/mes/masterdata/routing/index.vue'),
+        meta: {
+          icon: 'lucide:route',
+          title: '工作计划',
+        },
+      },
+    ],
+  },
 ];
 
 export default routes;
