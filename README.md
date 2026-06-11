@@ -4,7 +4,7 @@
 
 - **后端**：[pig-mesh/pig](https://github.com/pig-mesh/pig)（Spring Cloud / Spring Boot 3.x / Spring Authorization Server / MyBatis-Plus / Nacos）
 - **前端**：[vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)（Vue 3 / Vite / Ant Design Vue / TypeScript）
-- **产品参照**：MPDV HYDRA X 的模块划分与功能设计；车间对象模型参照 IEC 62264（ISA-95）标准
+- **产品参照**：MPDV 产品设计（依据用户提供的《MPDV Product Specification》——HYDRA X mApps / FEDRA 2 APS / MIP 平台逐项规格，及《MIP 交流》平台介绍）；车间对象模型参照 MIP ViPR/MBO 思想与 IEC 62264（ISA-95）标准
 
 ## 当前状态
 
