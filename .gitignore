@@ -1,0 +1,10 @@
+# lefthook 在 git 根自动生成的示例配置（实际配置在 frontend/lefthook.yml）
+/lefthook.yml
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
