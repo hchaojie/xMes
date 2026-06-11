@@ -27,7 +27,6 @@ public class MdBomLine extends Model<MdBomLine> {
 	private Long id;
 
 	/** BOM头ID */
-	@NotNull(message = "BOM头ID不能为空")
 	@Schema(description = "BOM头ID")
 	private Long bomId;
 

@@ -33,7 +33,6 @@ public class MdRouting extends Model<MdRouting> {
 	private Long materialId;
 
 	/** 版本号 */
-	@NotNull(message = "版本号不能为空")
 	@Schema(description = "版本号")
 	private Integer version;
 

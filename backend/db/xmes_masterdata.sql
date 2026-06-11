@@ -138,29 +138,29 @@ CREATE TABLE `mes_md_routing_operation` (
 -- ----------------------------
 -- 菜单：制造主数据（4100 段，挂在 4000 车间建模 根菜单下）
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (4060, '物料管理', NULL, '/mes/masterdata/material/index', NULL, 4000, 'iconfont icon-fuwenben', '1', 4, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4061, '物料查看', 'mes_mat_view', NULL, NULL, 4060, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4062, '物料新增', 'mes_mat_add', NULL, NULL, 4060, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4063, '物料修改', 'mes_mat_edit', NULL, NULL, 4060, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4064, '物料删除', 'mes_mat_del', NULL, NULL, 4060, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5060, '物料管理', NULL, '/mes/masterdata/material/index', NULL, 5000, 'iconfont icon-fuwenben', '1', 4, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5061, '物料查看', 'mes_mat_view', NULL, NULL, 5060, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5062, '物料新增', 'mes_mat_add', NULL, NULL, 5060, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5063, '物料修改', 'mes_mat_edit', NULL, NULL, 5060, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5064, '物料删除', 'mes_mat_del', NULL, NULL, 5060, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 
-INSERT INTO `sys_menu` VALUES (4070, 'BOM管理', NULL, '/mes/masterdata/bom/index', NULL, 4000, 'iconfont icon-caidan', '1', 5, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4071, 'BOM查看', 'mes_bom_view', NULL, NULL, 4070, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4072, 'BOM新增', 'mes_bom_add', NULL, NULL, 4070, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4073, 'BOM修改', 'mes_bom_edit', NULL, NULL, 4070, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4074, 'BOM删除', 'mes_bom_del', NULL, NULL, 4070, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4075, 'BOM发布/冻结', 'mes_bom_release', NULL, NULL, 4070, NULL, '1', 5, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5070, 'BOM管理', NULL, '/mes/masterdata/bom/index', NULL, 5000, 'iconfont icon-caidan', '1', 5, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5071, 'BOM查看', 'mes_bom_view', NULL, NULL, 5070, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5072, 'BOM新增', 'mes_bom_add', NULL, NULL, 5070, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5073, 'BOM修改', 'mes_bom_edit', NULL, NULL, 5070, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5074, 'BOM删除', 'mes_bom_del', NULL, NULL, 5070, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5075, 'BOM发布/冻结', 'mes_bom_release', NULL, NULL, 5070, NULL, '1', 5, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 
-INSERT INTO `sys_menu` VALUES (4080, '工作计划', NULL, '/mes/masterdata/routing/index', NULL, 4000, 'iconfont icon-gongju', '1', 6, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4081, '工作计划查看', 'mes_route_view', NULL, NULL, 4080, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4082, '工作计划新增', 'mes_route_add', NULL, NULL, 4080, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4083, '工作计划修改', 'mes_route_edit', NULL, NULL, 4080, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4084, '工作计划删除', 'mes_route_del', NULL, NULL, 4080, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4085, '工作计划发布/冻结', 'mes_route_release', NULL, NULL, 4080, NULL, '1', 5, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5080, '工作计划', NULL, '/mes/masterdata/routing/index', NULL, 5000, 'iconfont icon-gongju', '1', 6, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5081, '工作计划查看', 'mes_route_view', NULL, NULL, 5080, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5082, '工作计划新增', 'mes_route_add', NULL, NULL, 5080, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5083, '工作计划修改', 'mes_route_edit', NULL, NULL, 5080, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5084, '工作计划删除', 'mes_route_del', NULL, NULL, 5080, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5085, '工作计划发布/冻结', 'mes_route_release', NULL, NULL, 5080, NULL, '1', 5, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 
 -- 授权给管理员角色（role_id = 1）
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`)
-SELECT 1, `menu_id` FROM `sys_menu` WHERE `menu_id` >= 4060 AND `menu_id` < 4100
+SELECT 1, `menu_id` FROM `sys_menu` WHERE `menu_id` >= 5060 AND `menu_id` < 5100
   AND NOT EXISTS (SELECT 1 FROM `sys_role_menu` rm WHERE rm.`role_id` = 1 AND rm.`menu_id` = `sys_menu`.`menu_id`);
 
 SET FOREIGN_KEY_CHECKS = 1;

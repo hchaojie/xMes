@@ -12,7 +12,7 @@
 
 | 里程碑 | 内容 | 状态 |
 | --- | --- | --- |
-| M1 | 平台骨架（pig/vben）+ 车间建模 + 主数据 | 🚧 代码完成（建模 + 物料/BOM/工作计划），待环境联调 |
+| M1 | 平台骨架（pig/vben）+ 车间建模 + 主数据 | ✅ 完成（已通过端到端联调：登录→权限→建模/主数据全链路 CRUD 与状态机） |
 | M2 | 工单 + 排程 + 报工 + 工位终端 | ⏳ 未开始 |
 | M3 | 质量 + 追溯 + 看板 + ERP 联调 | ⏳ 未开始 |
 
@@ -55,6 +55,13 @@ pnpm dev:antd        # 管理端，默认 http://localhost:5666
 ```
 
 > 网关路由：xmes-core 注册名为 `xmes-core-biz`，需在网关路由规则中将 `/mes/**` 转发到该服务（单体模式无需配置）。
+
+### 联调注意事项（已在本仓库验证通过）
+
+- **单体（boot）模式**：`mvn install -Pboot -DskipTests` 后直接 `java -jar pig-boot/target/pig-boot.jar`，无需 Nacos；上下文路径为 `/admin`，MES 接口位于 `/admin/modeling/**`、`/admin/masterdata/**`，前端 vite 代理已按此配置（`/api/mes/** → /admin/**`）
+- **MySQL 大小写**：若服务器 `lower_case_table_names=0`（Linux 默认），需将 `qrtz_*` 表重命名为大写 `QRTZ_*`，或启动 MySQL 时加 `--lower-case-table-names=1`（pig 官方 docker-compose 的做法）
+- **登录**：开发期前端使用 `test:test` OAuth2 客户端（免图形验证码），密码 AES-128-CFB 加密（密钥=后端 `security.encodeKey`）；生产切换 `pig` 客户端并接入验证码
+- **MES 菜单**：占用 `sys_menu` 5000~5099 段（pig 自身占用 4000~4014），按钮权限码前缀 `mes_*`
 
 ## 需求文档目录
 

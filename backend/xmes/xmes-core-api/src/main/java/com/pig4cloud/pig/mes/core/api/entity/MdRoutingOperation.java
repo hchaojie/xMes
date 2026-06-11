@@ -28,7 +28,6 @@ public class MdRoutingOperation extends Model<MdRoutingOperation> {
 	private Long id;
 
 	/** 工作计划ID */
-	@NotNull(message = "工作计划ID不能为空")
 	@Schema(description = "工作计划ID")
 	private Long routingId;
 

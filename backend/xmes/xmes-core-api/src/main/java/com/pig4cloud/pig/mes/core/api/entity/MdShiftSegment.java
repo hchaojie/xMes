@@ -29,7 +29,6 @@ public class MdShiftSegment extends Model<MdShiftSegment> {
 	private Long id;
 
 	/** 班次模型ID */
-	@NotNull(message = "班次模型ID不能为空")
 	@Schema(description = "班次模型ID")
 	private Long shiftModelId;
 

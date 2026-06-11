@@ -199,40 +199,40 @@ CREATE TABLE `mes_md_calendar_day` (
 -- 菜单：车间建模（菜单ID 4000 段）
 -- 字段：menu_id, name, permission, path, component, parent_id, icon, visible, sort_order, keep_alive, embedded, menu_type, create_by, create_time, update_by, update_time, del_flag
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (4000, '车间建模', NULL, '/mes/modeling', NULL, -1, 'iconfont icon-shouye', '1', 10, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5000, '车间建模', NULL, '/mes/modeling', NULL, -1, 'iconfont icon-shouye', '1', 10, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
 
-INSERT INTO `sys_menu` VALUES (4010, '工厂结构', NULL, '/mes/modeling/factory/index', NULL, 4000, 'iconfont icon-icon-', '1', 1, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4011, '工厂查看', 'mes_site_view', NULL, NULL, 4010, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4012, '工厂新增', 'mes_site_add', NULL, NULL, 4010, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4013, '工厂修改', 'mes_site_edit', NULL, NULL, 4010, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4014, '工厂删除', 'mes_site_del', NULL, NULL, 4010, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4015, '车间查看', 'mes_area_view', NULL, NULL, 4010, NULL, '1', 5, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4016, '车间新增', 'mes_area_add', NULL, NULL, 4010, NULL, '1', 6, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4017, '车间修改', 'mes_area_edit', NULL, NULL, 4010, NULL, '1', 7, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4018, '车间删除', 'mes_area_del', NULL, NULL, 4010, NULL, '1', 8, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4019, '工作中心查看', 'mes_wc_view', NULL, NULL, 4010, NULL, '1', 9, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4020, '工作中心新增', 'mes_wc_add', NULL, NULL, 4010, NULL, '1', 10, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4021, '工作中心修改', 'mes_wc_edit', NULL, NULL, 4010, NULL, '1', 11, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4022, '工作中心删除', 'mes_wc_del', NULL, NULL, 4010, NULL, '1', 12, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4023, '工位查看', 'mes_wp_view', NULL, NULL, 4010, NULL, '1', 13, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4024, '工位新增', 'mes_wp_add', NULL, NULL, 4010, NULL, '1', 14, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4025, '工位修改', 'mes_wp_edit', NULL, NULL, 4010, NULL, '1', 15, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4026, '工位删除', 'mes_wp_del', NULL, NULL, 4010, NULL, '1', 16, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5010, '工厂结构', NULL, '/mes/modeling/factory/index', NULL, 5000, 'iconfont icon-icon-', '1', 1, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5011, '工厂查看', 'mes_site_view', NULL, NULL, 5010, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5012, '工厂新增', 'mes_site_add', NULL, NULL, 5010, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5013, '工厂修改', 'mes_site_edit', NULL, NULL, 5010, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5014, '工厂删除', 'mes_site_del', NULL, NULL, 5010, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5015, '车间查看', 'mes_area_view', NULL, NULL, 5010, NULL, '1', 5, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5016, '车间新增', 'mes_area_add', NULL, NULL, 5010, NULL, '1', 6, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5017, '车间修改', 'mes_area_edit', NULL, NULL, 5010, NULL, '1', 7, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5018, '车间删除', 'mes_area_del', NULL, NULL, 5010, NULL, '1', 8, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5019, '工作中心查看', 'mes_wc_view', NULL, NULL, 5010, NULL, '1', 9, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5020, '工作中心新增', 'mes_wc_add', NULL, NULL, 5010, NULL, '1', 10, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5021, '工作中心修改', 'mes_wc_edit', NULL, NULL, 5010, NULL, '1', 11, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5022, '工作中心删除', 'mes_wc_del', NULL, NULL, 5010, NULL, '1', 12, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5023, '工位查看', 'mes_wp_view', NULL, NULL, 5010, NULL, '1', 13, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5024, '工位新增', 'mes_wp_add', NULL, NULL, 5010, NULL, '1', 14, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5025, '工位修改', 'mes_wp_edit', NULL, NULL, 5010, NULL, '1', 15, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5026, '工位删除', 'mes_wp_del', NULL, NULL, 5010, NULL, '1', 16, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 
-INSERT INTO `sys_menu` VALUES (4040, '班次模型', NULL, '/mes/modeling/shift/index', NULL, 4000, 'iconfont icon-rizhi', '1', 2, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4041, '班次查看', 'mes_shift_view', NULL, NULL, 4040, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4042, '班次新增', 'mes_shift_add', NULL, NULL, 4040, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4043, '班次修改', 'mes_shift_edit', NULL, NULL, 4040, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4044, '班次删除', 'mes_shift_del', NULL, NULL, 4040, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5040, '班次模型', NULL, '/mes/modeling/shift/index', NULL, 5000, 'iconfont icon-rizhi', '1', 2, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5041, '班次查看', 'mes_shift_view', NULL, NULL, 5040, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5042, '班次新增', 'mes_shift_add', NULL, NULL, 5040, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5043, '班次修改', 'mes_shift_edit', NULL, NULL, 5040, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5044, '班次删除', 'mes_shift_del', NULL, NULL, 5040, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 
-INSERT INTO `sys_menu` VALUES (4050, '工厂日历', NULL, '/mes/modeling/calendar/index', NULL, 4000, 'iconfont icon-rili', '1', 3, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4051, '日历查看', 'mes_cal_view', NULL, NULL, 4050, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4052, '日历新增', 'mes_cal_add', NULL, NULL, 4050, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4053, '日历修改', 'mes_cal_edit', NULL, NULL, 4050, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
-INSERT INTO `sys_menu` VALUES (4054, '日历删除', 'mes_cal_del', NULL, NULL, 4050, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5050, '工厂日历', NULL, '/mes/modeling/calendar/index', NULL, 5000, 'iconfont icon-rili', '1', 3, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5051, '日历查看', 'mes_cal_view', NULL, NULL, 5050, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5052, '日历新增', 'mes_cal_add', NULL, NULL, 5050, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5053, '日历修改', 'mes_cal_edit', NULL, NULL, 5050, NULL, '1', 3, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5054, '日历删除', 'mes_cal_del', NULL, NULL, 5050, NULL, '1', 4, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 
 -- 授权给管理员角色（role_id = 1）
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`)
-SELECT 1, `menu_id` FROM `sys_menu` WHERE `menu_id` >= 4000 AND `menu_id` < 5000;
+SELECT 1, `menu_id` FROM `sys_menu` WHERE `menu_id` >= 5000 AND `menu_id` < 6000;
 
 SET FOREIGN_KEY_CHECKS = 1;
