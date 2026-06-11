@@ -95,6 +95,15 @@ const routes: RouteRecordRaw[] = [
           title: '工单管理',
         },
       },
+      {
+        name: 'MesOrderSchedule',
+        path: 'schedule',
+        component: () => import('#/views/mes/order/schedule/index.vue'),
+        meta: {
+          icon: 'lucide:gantt-chart',
+          title: '作业排程',
+        },
+      },
     ],
   },
 ];

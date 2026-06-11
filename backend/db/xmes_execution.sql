@@ -134,3 +134,9 @@ CREATE TABLE `mes_wo_booking` (
 INSERT INTO `sys_menu` VALUES (5117, '报工操作', 'mes_booking_operate', NULL, NULL, 5110, NULL, '1', 7, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 INSERT INTO `sys_menu` VALUES (5118, '报工冲销', 'mes_booking_reverse', NULL, NULL, 5110, NULL, '1', 8, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5117), (1, 5118);
+
+-- 排程菜单与权限
+INSERT INTO `sys_menu` VALUES (5120, '作业排程', NULL, '/mes/order/schedule/index', NULL, 5100, 'iconfont icon-rili', '1', 2, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5121, '排程查看', 'mes_schedule_view', NULL, NULL, 5120, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5122, '排程调整', 'mes_schedule_edit', NULL, NULL, 5120, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5120), (1, 5121), (1, 5122);

@@ -1,9 +1,12 @@
 package com.pig4cloud.pig.mes.execution.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.mes.core.api.entity.MdCalendarDay;
 import com.pig4cloud.pig.mes.core.api.entity.MdMaterial;
 import com.pig4cloud.pig.mes.core.api.entity.MdRouting;
 import com.pig4cloud.pig.mes.core.api.entity.MdRoutingOperation;
+import com.pig4cloud.pig.mes.core.api.entity.MdWorkCenter;
+import com.pig4cloud.pig.mes.core.api.entity.MdWorkplace;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -28,6 +31,21 @@ public interface MdReadMapper {
 
 	@Mapper
 	interface RoutingOperationReadMapper extends BaseMapper<MdRoutingOperation> {
+
+	}
+
+	@Mapper
+	interface WorkCenterReadMapper extends BaseMapper<MdWorkCenter> {
+
+	}
+
+	@Mapper
+	interface WorkplaceReadMapper extends BaseMapper<MdWorkplace> {
+
+	}
+
+	@Mapper
+	interface CalendarDayReadMapper extends BaseMapper<MdCalendarDay> {
 
 	}
 
