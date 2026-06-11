@@ -77,6 +77,26 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    meta: {
+      icon: 'lucide:clipboard-list',
+      order: 12,
+      title: '生产执行',
+    },
+    name: 'MesOrder',
+    path: '/mes/order',
+    children: [
+      {
+        name: 'MesOrderWorkorder',
+        path: 'workorder',
+        component: () => import('#/views/mes/order/workorder/index.vue'),
+        meta: {
+          icon: 'lucide:file-cog',
+          title: '工单管理',
+        },
+      },
+    ],
+  },
 ];
 
 export default routes;
