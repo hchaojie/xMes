@@ -41,8 +41,9 @@ public class WoBookingController {
 	@PostMapping("/start/{taskId}")
 	@HasPermission("mes_booking_operate")
 	public R<Boolean> start(@PathVariable("taskId") Long taskId,
-			@RequestParam(value = "workplaceId", required = false) Long workplaceId) {
-		woBookingService.start(taskId, workplaceId);
+			@RequestParam(value = "workplaceId", required = false) Long workplaceId,
+			@RequestParam(value = "source", required = false) String source) {
+		woBookingService.start(taskId, workplaceId, source);
 		return R.ok(Boolean.TRUE);
 	}
 
@@ -56,8 +57,9 @@ public class WoBookingController {
 	@SysLog("作业暂停")
 	@PostMapping("/pause/{taskId}")
 	@HasPermission("mes_booking_operate")
-	public R<Boolean> pause(@PathVariable("taskId") Long taskId, @RequestParam("reasonCode") String reasonCode) {
-		woBookingService.pause(taskId, reasonCode);
+	public R<Boolean> pause(@PathVariable("taskId") Long taskId, @RequestParam("reasonCode") String reasonCode,
+			@RequestParam(value = "source", required = false) String source) {
+		woBookingService.pause(taskId, reasonCode, source);
 		return R.ok(Boolean.TRUE);
 	}
 
@@ -70,8 +72,9 @@ public class WoBookingController {
 	@SysLog("作业恢复")
 	@PostMapping("/resume/{taskId}")
 	@HasPermission("mes_booking_operate")
-	public R<Boolean> resume(@PathVariable("taskId") Long taskId) {
-		woBookingService.resume(taskId);
+	public R<Boolean> resume(@PathVariable("taskId") Long taskId,
+			@RequestParam(value = "source", required = false) String source) {
+		woBookingService.resume(taskId, source);
 		return R.ok(Boolean.TRUE);
 	}
 

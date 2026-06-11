@@ -42,7 +42,7 @@ public class WoBookingServiceImpl extends ServiceImpl<WoBookingMapper, WoBooking
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void start(Long taskId, Long workplaceId) {
+	public void start(Long taskId, Long workplaceId, String source) {
 		WoTask task = mustGetTask(taskId);
 		WoOrder order = mustGetOrder(task.getOrderId());
 		Assert.isTrue("RELEASED".equals(order.getOrderStatus()) || "IN_PROGRESS".equals(order.getOrderStatus()),
@@ -71,28 +71,28 @@ public class WoBookingServiceImpl extends ServiceImpl<WoBookingMapper, WoBooking
 			order.setOrderStatus("IN_PROGRESS");
 			orderMapper.updateById(order);
 		}
-		insertEvent(task, "START", null, null, null, null, workplaceId, null, null);
+		insertEvent(task, "START", null, null, null, null, workplaceId, null, null, source);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void pause(Long taskId, String reasonCode) {
+	public void pause(Long taskId, String reasonCode, String source) {
 		Assert.hasText(reasonCode, "暂停原因不能为空");
 		WoTask task = mustGetTask(taskId);
 		Assert.isTrue("RUNNING".equals(task.getTaskStatus()), "仅进行中的作业可暂停");
 		task.setTaskStatus("PAUSED");
 		taskMapper.updateById(task);
-		insertEvent(task, "PAUSE", null, null, null, reasonCode, null, null, null);
+		insertEvent(task, "PAUSE", null, null, null, reasonCode, null, null, null, source);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void resume(Long taskId) {
+	public void resume(Long taskId, String source) {
 		WoTask task = mustGetTask(taskId);
 		Assert.isTrue("PAUSED".equals(task.getTaskStatus()), "仅暂停状态可恢复");
 		task.setTaskStatus("RUNNING");
 		taskMapper.updateById(task);
-		insertEvent(task, "RESUME", null, null, null, null, null, null, null);
+		insertEvent(task, "RESUME", null, null, null, null, null, null, null, source);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class WoBookingServiceImpl extends ServiceImpl<WoBookingMapper, WoBooking
 		applyQty(task, dto);
 		taskMapper.updateById(task);
 		insertEvent(task, "QTY", nz(dto.getQtyGood()), nz(dto.getQtyScrap()), nz(dto.getQtyRework()),
-				dto.getReasonCode(), dto.getWorkplaceId(), dto.getRemark(), null);
+				dto.getReasonCode(), dto.getWorkplaceId(), dto.getRemark(), null, dto.getSource());
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class WoBookingServiceImpl extends ServiceImpl<WoBookingMapper, WoBooking
 		task.setTaskStatus("COMPLETED");
 		taskMapper.updateById(task);
 		insertEvent(task, "FINISH", nz(dto.getQtyGood()), nz(dto.getQtyScrap()), nz(dto.getQtyRework()),
-				dto.getReasonCode(), dto.getWorkplaceId(), dto.getRemark(), null);
+				dto.getReasonCode(), dto.getWorkplaceId(), dto.getRemark(), null, dto.getSource());
 
 		// 末道完工：同步工单数量账户，尝试完工工单
 		if (isLastTask(task)) {
@@ -160,7 +160,7 @@ public class WoBookingServiceImpl extends ServiceImpl<WoBookingMapper, WoBooking
 
 		insertEvent(task, "REVERSE", nz(origin.getQtyGood()).negate(), nz(origin.getQtyScrap()).negate(),
 				nz(origin.getQtyRework()).negate(), origin.getReasonCode(), origin.getWorkplaceId(), remark,
-				bookingId);
+				bookingId, null);
 	}
 
 	@Override
@@ -231,7 +231,7 @@ public class WoBookingServiceImpl extends ServiceImpl<WoBookingMapper, WoBooking
 	}
 
 	private void insertEvent(WoTask task, String type, BigDecimal good, BigDecimal scrap, BigDecimal rework,
-			String reasonCode, Long workplaceId, String remark, Long reverseOfId) {
+			String reasonCode, Long workplaceId, String remark, Long reverseOfId, String source) {
 		WoBooking event = new WoBooking();
 		event.setTaskId(task.getId());
 		event.setOrderId(task.getOrderId());
@@ -243,7 +243,7 @@ public class WoBookingServiceImpl extends ServiceImpl<WoBookingMapper, WoBooking
 		event.setWorkplaceId(workplaceId != null ? workplaceId : task.getWorkplaceId());
 		event.setPersonName(SecurityUtils.getUser() != null ? SecurityUtils.getUser().getUsername() : null);
 		event.setBookingTime(LocalDateTime.now());
-		event.setSource("MANUAL");
+		event.setSource(StrUtil.blankToDefault(source, "MANUAL"));
 		event.setReverseOfId(reverseOfId);
 		event.setRemark(remark);
 		this.save(event);

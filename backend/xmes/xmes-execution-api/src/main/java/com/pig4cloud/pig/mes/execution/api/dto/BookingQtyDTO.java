@@ -44,4 +44,8 @@ public class BookingQtyDTO {
 	@Schema(description = "备注")
 	private String remark;
 
+	/** 事件来源：TERMINAL-工位终端，PDA，MANUAL-管理端（默认） */
+	@Schema(description = "事件来源：TERMINAL/PDA/MANUAL")
+	private String source;
+
 }

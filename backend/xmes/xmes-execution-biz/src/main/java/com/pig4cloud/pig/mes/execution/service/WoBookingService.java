@@ -18,20 +18,20 @@ public interface WoBookingService extends IService<WoBooking> {
 	 * @param taskId 作业ID
 	 * @param workplaceId 工位ID（可空）
 	 */
-	void start(Long taskId, Long workplaceId);
+	void start(Long taskId, Long workplaceId, String source);
 
 	/**
 	 * 暂停：进行中 → 暂停
 	 * @param taskId 作业ID
 	 * @param reasonCode 暂停原因码（必填）
 	 */
-	void pause(Long taskId, String reasonCode);
+	void pause(Long taskId, String reasonCode, String source);
 
 	/**
 	 * 恢复：暂停 → 进行中
 	 * @param taskId 作业ID
 	 */
-	void resume(Long taskId);
+	void resume(Long taskId, String source);
 
 	/**
 	 * 报数：数量守恒校验（累计 ≤ 上道完工良品 / 工单计划数），报废必填原因

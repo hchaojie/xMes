@@ -123,22 +123,25 @@ export interface BookingQty {
   reasonCode?: string;
   workplaceId?: string;
   remark?: string;
+  source?: string;
 }
 
-export function startTask(taskId: string, workplaceId?: string) {
+export function startTask(taskId: string, workplaceId?: string, source?: string) {
   return requestClient.post(`/mes/order/booking/start/${taskId}`, null, {
-    params: { workplaceId },
+    params: { workplaceId, source },
   });
 }
 
-export function pauseTask(taskId: string, reasonCode: string) {
+export function pauseTask(taskId: string, reasonCode: string, source?: string) {
   return requestClient.post(`/mes/order/booking/pause/${taskId}`, null, {
-    params: { reasonCode },
+    params: { reasonCode, source },
   });
 }
 
-export function resumeTask(taskId: string) {
-  return requestClient.post(`/mes/order/booking/resume/${taskId}`);
+export function resumeTask(taskId: string, source?: string) {
+  return requestClient.post(`/mes/order/booking/resume/${taskId}`, null, {
+    params: { source },
+  });
 }
 
 export function reportTaskQty(data: BookingQty) {

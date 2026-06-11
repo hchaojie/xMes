@@ -140,3 +140,7 @@ INSERT INTO `sys_menu` VALUES (5120, '作业排程', NULL, '/mes/order/schedule/
 INSERT INTO `sys_menu` VALUES (5121, '排程查看', 'mes_schedule_view', NULL, NULL, 5120, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 INSERT INTO `sys_menu` VALUES (5122, '排程调整', 'mes_schedule_edit', NULL, NULL, 5120, NULL, '1', 2, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5120), (1, 5121), (1, 5122);
+
+-- 工位终端权限（终端页面 + 队列接口；报工复用 mes_booking_operate）
+INSERT INTO `sys_menu` VALUES (5130, '工位终端', 'mes_terminal_use', '/terminal', NULL, 5100, 'iconfont icon-gongju', '1', 3, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5130);

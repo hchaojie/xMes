@@ -23,6 +23,20 @@ const fallbackNotFoundRoute: RouteRecordRaw = {
 /** 基本路由，这些路由是必须存在的 */
 const coreRoutes: RouteRecordRaw[] = [
   /**
+   * MES 工位终端：全屏独立页面（不挂管理端布局），需登录。
+   * 后续工程化方向是拆为独立 web-terminal 应用。
+   */
+  {
+    component: () => import('#/views/mes/terminal/index.vue'),
+    meta: {
+      hideInMenu: true,
+      hideInTab: true,
+      title: '工位终端',
+    },
+    name: 'MesTerminal',
+    path: '/terminal',
+  },
+  /**
    * 根路由
    * 使用基础布局，作为所有页面的父级容器，子级就不必配置BasicLayout。
    * 此路由必须存在，且不应修改
