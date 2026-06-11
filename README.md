@@ -8,7 +8,52 @@
 
 ## 当前状态
 
-📋 **需求规划阶段** —— 尚未开始编码。本仓库当前只包含产品需求文档，待评审确认后进入实现阶段。
+🚧 **Phase 1 实现中**（需求文档已评审冻结，全部决策项 Q1~Q7 已确认）
+
+| 里程碑 | 内容 | 状态 |
+| --- | --- | --- |
+| M1 | 平台骨架（pig/vben）+ 车间建模 + 主数据 | 🚧 进行中：工程骨架与车间建模切片已完成 |
+| M2 | 工单 + 排程 + 报工 + 工位终端 | ⏳ 未开始 |
+| M3 | 质量 + 追溯 + 看板 + ERP 联调 | ⏳ 未开始 |
+
+## 仓库结构
+
+```
+xMes/
+├── docs/        需求文档（00~12）
+├── backend/     后端：pig 4.0 骨架（Spring Boot 4 / Spring Cloud 2025）+ xmes 业务模块
+│   ├── pig-*            pig 原生服务（auth/gateway/upms/register/boot...）
+│   ├── xmes/
+│   │   ├── xmes-core-api    实体与对外 API 定义
+│   │   └── xmes-core-biz    平台与建模服务（端口 4100）
+│   └── db/
+│       ├── pig.sql          pig 系统表与基础数据（先执行）
+│       └── xmes_core.sql    MES 建模表 + 菜单权限（后执行）
+└── frontend/    前端：vue-vben-admin v5 monorepo（保留 apps/web-antd 作为管理端）
+    └── apps/web-antd/src/{api,views,router/routes/modules}/mes/...
+```
+
+## 本地开发
+
+后端（两种启动方式）：
+
+```bash
+cd backend
+mvn install -DskipTests -Dspring-javaformat.skip=true
+# 方式一：单体模式（开发推荐，已聚合 xmes-core）——先启动 pig-register(Nacos)，再启动 pig-boot
+# 方式二：微服务模式——依次启动 pig-register / pig-gateway / pig-auth / pig-upms-biz / xmes-core-biz
+# 数据库：执行 db/pig.sql 与 db/xmes_core.sql；Nacos 配置执行 db/pig_config.sql
+```
+
+前端：
+
+```bash
+cd frontend
+pnpm install
+pnpm dev:antd        # 管理端，默认 http://localhost:5666
+```
+
+> 网关路由：xmes-core 注册名为 `xmes-core-biz`，需在网关路由规则中将 `/mes/**` 转发到该服务（单体模式无需配置）。
 
 ## 需求文档目录
 
