@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Material } from '#/api/mes/masterdata';
-import type { WoOrder } from '#/api/mes/order';
+import type { BookingQty, WoBooking, WoOrder, WoTask } from '#/api/mes/order';
 
 import { onMounted, reactive, ref } from 'vue';
 
@@ -29,12 +29,19 @@ import { getMaterialList } from '#/api/mes/masterdata';
 import {
   cancelWorkOrder,
   createWorkOrder,
+  finishTask,
+  getTaskBookings,
   getWorkOrderDetail,
   getWorkOrderPage,
   holdWorkOrder,
+  pauseTask,
   releaseWorkOrders,
   removeWorkOrders,
+  reportTaskQty,
+  resumeTask,
   resumeWorkOrder,
+  reverseBooking,
+  startTask,
 } from '#/api/mes/order';
 
 defineOptions({ name: 'MesOrderWorkorder' });
@@ -81,13 +88,13 @@ const columns = [
 
 const taskColumns = [
   { title: '工序号', dataIndex: 'operationNo', width: 80 },
-  { title: '工序名称', dataIndex: 'operationName', width: 140 },
-  { title: '类型', dataIndex: 'operationType', width: 90 },
-  { title: '状态', dataIndex: 'taskStatus', width: 90 },
-  { title: '应做', dataIndex: 'qtyTarget', width: 80 },
-  { title: '良品', dataIndex: 'qtyGood', width: 80 },
-  { title: '报废', dataIndex: 'qtyScrap', width: 80 },
-  { title: '质量门', dataIndex: 'qualityGate', width: 70 },
+  { title: '工序名称', dataIndex: 'operationName', width: 120 },
+  { title: '状态', dataIndex: 'taskStatus', width: 80 },
+  { title: '应做', dataIndex: 'qtyTarget', width: 70 },
+  { title: '良品', dataIndex: 'qtyGood', width: 70 },
+  { title: '报废', dataIndex: 'qtyScrap', width: 70 },
+  { title: '质量门', dataIndex: 'qualityGate', width: 65 },
+  { title: '报工操作', key: 'booking', width: 250 },
 ];
 
 async function loadPage() {
@@ -198,6 +205,100 @@ const detail = ref<null | WoOrder>(null);
 async function openDetail(row: WoOrder) {
   detail.value = await getWorkOrderDetail(row.id!);
   drawerOpen.value = true;
+}
+
+async function refreshDetail() {
+  if (detail.value?.id) {
+    detail.value = await getWorkOrderDetail(detail.value.id);
+    await loadPage();
+  }
+}
+
+/** 报工操作 */
+async function handleStart(task: WoTask) {
+  await startTask(task.id!);
+  message.success(`工序 ${task.operationNo} 已开工`);
+  await refreshDetail();
+}
+
+async function handlePauseTask(task: WoTask) {
+  await pauseTask(task.id!, 'MANUAL');
+  message.success('已暂停');
+  await refreshDetail();
+}
+
+async function handleResumeTask(task: WoTask) {
+  await resumeTask(task.id!);
+  message.success('已恢复');
+  await refreshDetail();
+}
+
+/** 报数/完工弹窗（共用） */
+const qtyModalOpen = ref(false);
+const qtyMode = ref<'finish' | 'qty'>('qty');
+const qtyForm = reactive<BookingQty>({ taskId: '' });
+
+function openQty(task: WoTask, mode: 'finish' | 'qty') {
+  qtyMode.value = mode;
+  Object.assign(qtyForm, {
+    taskId: task.id,
+    qtyGood: undefined,
+    qtyScrap: undefined,
+    qtyRework: undefined,
+    reasonCode: undefined,
+    remark: undefined,
+  });
+  qtyModalOpen.value = true;
+}
+
+async function handleQtySubmit() {
+  if ((qtyForm.qtyScrap ?? 0) > 0 && !qtyForm.reasonCode) {
+    message.warning('报废数量必须填写报废原因');
+    return;
+  }
+  await (qtyMode.value === 'qty'
+    ? reportTaskQty({ ...qtyForm })
+    : finishTask({ ...qtyForm }));
+  message.success(qtyMode.value === 'qty' ? '报数成功' : '作业已完工');
+  qtyModalOpen.value = false;
+  await refreshDetail();
+}
+
+/** 事件流抽屉 */
+const bookingDrawerOpen = ref(false);
+const bookings = ref<WoBooking[]>([]);
+const bookingTask = ref<null | WoTask>(null);
+
+const BOOKING_TYPE_META: Record<string, string> = {
+  START: '开工',
+  PAUSE: '暂停',
+  RESUME: '恢复',
+  QTY: '报数',
+  FINISH: '完工',
+  REVERSE: '冲销',
+};
+
+const bookingColumns = [
+  { title: '时间', dataIndex: 'bookingTime', width: 160 },
+  { title: '类型', dataIndex: 'bookingType', width: 70 },
+  { title: '良品', dataIndex: 'qtyGood', width: 70 },
+  { title: '报废', dataIndex: 'qtyScrap', width: 70 },
+  { title: '原因', dataIndex: 'reasonCode', width: 90 },
+  { title: '报工人', dataIndex: 'personName', width: 90 },
+  { title: '操作', key: 'action', width: 70 },
+];
+
+async function openBookings(task: WoTask) {
+  bookingTask.value = task;
+  bookings.value = await getTaskBookings(task.id!);
+  bookingDrawerOpen.value = true;
+}
+
+async function handleReverse(row: WoBooking) {
+  await reverseBooking(row.id, '管理端冲销');
+  message.success('已冲销');
+  bookings.value = await getTaskBookings(bookingTask.value!.id!);
+  await refreshDetail();
 }
 
 onMounted(async () => {
@@ -389,6 +490,110 @@ onMounted(async () => {
           <template v-else-if="column.dataIndex === 'qualityGate'">
             <Tag v-if="record.qualityGate === '1'" color="warning">是</Tag>
             <span v-else>-</span>
+          </template>
+          <template v-else-if="column.key === 'booking'">
+            <Space>
+              <Button
+                v-if="['DISPATCHED', 'PENDING', 'SCHEDULED'].includes(record.taskStatus)"
+                size="small"
+                type="link"
+                @click="handleStart(record as any)"
+              >
+                开工
+              </Button>
+              <Button
+                v-if="record.taskStatus === 'RUNNING'"
+                size="small"
+                type="link"
+                @click="handlePauseTask(record as any)"
+              >
+                暂停
+              </Button>
+              <Button
+                v-if="record.taskStatus === 'PAUSED'"
+                size="small"
+                type="link"
+                @click="handleResumeTask(record as any)"
+              >
+                恢复
+              </Button>
+              <Button
+                v-if="record.taskStatus === 'RUNNING'"
+                size="small"
+                type="link"
+                @click="openQty(record as any, 'qty')"
+              >
+                报数
+              </Button>
+              <Button
+                v-if="['PAUSED', 'RUNNING'].includes(record.taskStatus)"
+                size="small"
+                type="link"
+                @click="openQty(record as any, 'finish')"
+              >
+                完工
+              </Button>
+              <Button size="small" type="link" @click="openBookings(record as any)">
+                事件
+              </Button>
+            </Space>
+          </template>
+        </template>
+      </Table>
+    </Drawer>
+
+    <Modal
+      v-model:open="qtyModalOpen"
+      :title="qtyMode === 'qty' ? '作业报数' : '作业完工（可携带最后一笔数量）'"
+      @ok="handleQtySubmit"
+    >
+      <Form layout="vertical">
+        <Space>
+          <FormItem label="良品数量">
+            <InputNumber v-model:value="qtyForm.qtyGood" :min="0" style="width: 120px" />
+          </FormItem>
+          <FormItem label="报废数量">
+            <InputNumber v-model:value="qtyForm.qtyScrap" :min="0" style="width: 120px" />
+          </FormItem>
+          <FormItem label="返工数量">
+            <InputNumber v-model:value="qtyForm.qtyRework" :min="0" style="width: 120px" />
+          </FormItem>
+        </Space>
+        <FormItem label="报废原因（报废>0 必填）">
+          <Input v-model:value="qtyForm.reasonCode" placeholder="如 表面划伤 / 尺寸超差" />
+        </FormItem>
+        <FormItem label="备注">
+          <Input v-model:value="qtyForm.remark" placeholder="备注" />
+        </FormItem>
+      </Form>
+    </Modal>
+
+    <Drawer
+      v-model:open="bookingDrawerOpen"
+      :title="`事件流 - 工序 ${bookingTask?.operationNo ?? ''} ${bookingTask?.operationName ?? ''}`"
+      width="720"
+    >
+      <Table
+        :columns="bookingColumns"
+        :data-source="bookings"
+        :pagination="false"
+        row-key="id"
+        size="small"
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'bookingType'">
+            <Tag :color="record.bookingType === 'REVERSE' ? 'error' : 'blue'">
+              {{ BOOKING_TYPE_META[record.bookingType] ?? record.bookingType }}
+            </Tag>
+          </template>
+          <template v-else-if="column.key === 'action'">
+            <Popconfirm
+              v-if="record.bookingType === 'QTY'"
+              title="生成负向冲销事件并回滚数量？"
+              @confirm="handleReverse(record as any)"
+            >
+              <Button size="small" type="link" danger>冲销</Button>
+            </Popconfirm>
           </template>
         </template>
       </Table>

@@ -100,3 +100,37 @@ SELECT 1, `menu_id` FROM `sys_menu` WHERE `menu_id` >= 5100 AND `menu_id` < 5200
   AND NOT EXISTS (SELECT 1 FROM `sys_role_menu` rm WHERE rm.`role_id` = 1 AND rm.`menu_id` = `sys_menu`.`menu_id`);
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- 报工事件（不可变，修正以负向冲销事件实现）
+-- ----------------------------
+DROP TABLE IF EXISTS `mes_wo_booking`;
+CREATE TABLE `mes_wo_booking` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `task_id` bigint NOT NULL COMMENT '作业ID',
+  `order_id` bigint NOT NULL COMMENT '工单ID',
+  `booking_type` varchar(16) NOT NULL COMMENT '事件类型：START/PAUSE/RESUME/QTY/FINISH/REVERSE',
+  `qty_good` decimal(18,6) DEFAULT NULL COMMENT '良品数量（冲销为负）',
+  `qty_scrap` decimal(18,6) DEFAULT NULL COMMENT '报废数量（冲销为负）',
+  `qty_rework` decimal(18,6) DEFAULT NULL COMMENT '返工数量（冲销为负）',
+  `reason_code` varchar(64) DEFAULT NULL COMMENT '报废/暂停原因码',
+  `workplace_id` bigint DEFAULT NULL COMMENT '工位ID',
+  `person_name` varchar(64) DEFAULT NULL COMMENT '报工人',
+  `booking_time` datetime NOT NULL COMMENT '发生时间',
+  `source` varchar(16) DEFAULT 'MANUAL' COMMENT '来源：TERMINAL/PDA/MANUAL/AUTO',
+  `reverse_of_id` bigint DEFAULT NULL COMMENT '冲销指向的原事件ID',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(64) DEFAULT ' ' COMMENT '创建人',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志：0-未删除，1-已删除',
+  `tenant_id` bigint DEFAULT '1' COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_bk_task` (`task_id`),
+  KEY `idx_bk_order` (`order_id`),
+  KEY `idx_bk_time` (`booking_time`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '报工事件';
+
+-- 报工按钮权限
+INSERT INTO `sys_menu` VALUES (5117, '报工操作', 'mes_booking_operate', NULL, NULL, 5110, NULL, '1', 7, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5118, '报工冲销', 'mes_booking_reverse', NULL, NULL, 5110, NULL, '1', 8, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5117), (1, 5118);

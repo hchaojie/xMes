@@ -95,3 +95,66 @@ export function cancelWorkOrder(id: string) {
 export function removeWorkOrders(ids: string[]) {
   return requestClient.delete('/mes/order/work-order', { data: ids });
 }
+
+/** 报工事件 */
+export interface WoBooking {
+  id: string;
+  taskId: string;
+  orderId: string;
+  bookingType: 'FINISH' | 'PAUSE' | 'QTY' | 'RESUME' | 'REVERSE' | 'START';
+  qtyGood?: number;
+  qtyScrap?: number;
+  qtyRework?: number;
+  reasonCode?: string;
+  workplaceId?: string;
+  personName?: string;
+  bookingTime: string;
+  source?: string;
+  reverseOfId?: string;
+  remark?: string;
+}
+
+/** 报数/完工参数 */
+export interface BookingQty {
+  taskId: string;
+  qtyGood?: number;
+  qtyScrap?: number;
+  qtyRework?: number;
+  reasonCode?: string;
+  workplaceId?: string;
+  remark?: string;
+}
+
+export function startTask(taskId: string, workplaceId?: string) {
+  return requestClient.post(`/mes/order/booking/start/${taskId}`, null, {
+    params: { workplaceId },
+  });
+}
+
+export function pauseTask(taskId: string, reasonCode: string) {
+  return requestClient.post(`/mes/order/booking/pause/${taskId}`, null, {
+    params: { reasonCode },
+  });
+}
+
+export function resumeTask(taskId: string) {
+  return requestClient.post(`/mes/order/booking/resume/${taskId}`);
+}
+
+export function reportTaskQty(data: BookingQty) {
+  return requestClient.post('/mes/order/booking/qty', data);
+}
+
+export function finishTask(data: BookingQty) {
+  return requestClient.post('/mes/order/booking/finish', data);
+}
+
+export function reverseBooking(bookingId: string, remark?: string) {
+  return requestClient.post(`/mes/order/booking/reverse/${bookingId}`, null, {
+    params: { remark },
+  });
+}
+
+export function getTaskBookings(taskId: string) {
+  return requestClient.get<WoBooking[]>(`/mes/order/booking/task/${taskId}`);
+}
