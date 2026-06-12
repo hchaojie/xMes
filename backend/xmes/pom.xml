@@ -18,5 +18,7 @@
         <module>xmes-core-biz</module>
         <module>xmes-execution-api</module>
         <module>xmes-execution-biz</module>
+        <module>xmes-quality-api</module>
+        <module>xmes-quality-biz</module>
     </modules>
 </project>

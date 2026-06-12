@@ -8,6 +8,8 @@ import com.pig4cloud.pig.mes.execution.api.dto.BookingQtyDTO;
 import com.pig4cloud.pig.mes.execution.api.entity.WoBooking;
 import com.pig4cloud.pig.mes.execution.api.entity.WoOrder;
 import com.pig4cloud.pig.mes.execution.api.entity.WoTask;
+import com.pig4cloud.pig.mes.quality.api.entity.QcInspectionOrder;
+import com.pig4cloud.pig.mes.execution.mapper.QcReadMapper;
 import com.pig4cloud.pig.mes.execution.mapper.WoBookingMapper;
 import com.pig4cloud.pig.mes.execution.mapper.WoOrderMapper;
 import com.pig4cloud.pig.mes.execution.mapper.WoTaskMapper;
@@ -40,6 +42,8 @@ public class WoBookingServiceImpl extends ServiceImpl<WoBookingMapper, WoBooking
 
 	private final WoOrderMapper orderMapper;
 
+	private final QcReadMapper qcReadMapper;
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void start(Long taskId, Long workplaceId, String source) {
@@ -58,6 +62,16 @@ public class WoBookingServiceImpl extends ServiceImpl<WoBookingMapper, WoBooking
 					&& previous.getQtyGood().compareTo(task.getTransferQty()) >= 0;
 			Assert.isTrue(prevFinished || transferReady,
 					StrUtil.format("上道工序 {} 未完工（转移批量条件也未满足），不允许开工", previous.getOperationNo()));
+
+			// 质量门放行（R7-2/R4-4）：上道为质量门时须有 合格/让步 检验单
+			if ("1".equals(previous.getQualityGate())) {
+				Long released = qcReadMapper.selectCount(Wrappers.<QcInspectionOrder>lambdaQuery()
+					.eq(QcInspectionOrder::getTaskId, previous.getId())
+					.in(QcInspectionOrder::getInspectStatus, List.of("PASSED", "CONCESSION")));
+				Assert.isTrue(released > 0,
+						StrUtil.format("上道工序 {} 为质量门，检验未放行（待检/检验中/不合格），不允许开工",
+								previous.getOperationNo()));
+			}
 		}
 
 		task.setTaskStatus("RUNNING");

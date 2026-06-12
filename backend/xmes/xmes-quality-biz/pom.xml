@@ -8,10 +8,10 @@
         <version>4.0.0</version>
     </parent>
 
-    <artifactId>xmes-execution-biz</artifactId>
+    <artifactId>xmes-quality-biz</artifactId>
     <packaging>jar</packaging>
 
-    <description>xmes-execution 生产执行服务：工单、作业、排程、报工</description>
+    <description>xmes-quality-material 质量与物料服务：检验、不合格品、批次追溯</description>
 
     <dependencies>
         <dependency>
@@ -20,19 +20,18 @@
         </dependency>
         <dependency>
             <groupId>com.pig4cloud</groupId>
-            <artifactId>xmes-execution-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <!-- 质量实体（质量门放行校验只读），仅依赖 api -->
-        <dependency>
-            <groupId>com.pig4cloud</groupId>
             <artifactId>xmes-quality-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- 主数据实体（工艺快照来源），仅依赖 api -->
+        <!-- 主数据/执行实体（只读访问，拆分微服务时替换为 Feign） -->
         <dependency>
             <groupId>com.pig4cloud</groupId>
             <artifactId>xmes-core-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pig4cloud</groupId>
+            <artifactId>xmes-execution-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

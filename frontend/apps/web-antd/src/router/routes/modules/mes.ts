@@ -106,6 +106,35 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    meta: {
+      icon: 'lucide:badge-check',
+      order: 13,
+      title: '质量管理',
+    },
+    name: 'MesQuality',
+    path: '/mes/quality',
+    children: [
+      {
+        name: 'MesQualityPlan',
+        path: 'plan',
+        component: () => import('#/views/mes/quality/plan/index.vue'),
+        meta: {
+          icon: 'lucide:clipboard-check',
+          title: '检验计划',
+        },
+      },
+      {
+        name: 'MesQualityInspection',
+        path: 'inspection',
+        component: () => import('#/views/mes/quality/inspection/index.vue'),
+        meta: {
+          icon: 'lucide:search-check',
+          title: '检验工作台',
+        },
+      },
+    ],
+  },
 ];
 
 export default routes;

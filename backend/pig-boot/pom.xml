@@ -54,6 +54,12 @@
             <artifactId>xmes-execution-biz</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--xMes 质量与物料模块-->
+        <dependency>
+            <groupId>com.pig4cloud</groupId>
+            <artifactId>xmes-quality-biz</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--代码生成模块-->
         <dependency>
             <groupId>com.pig4cloud</groupId>
