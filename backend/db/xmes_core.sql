@@ -236,3 +236,28 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`)
 SELECT 1, `menu_id` FROM `sys_menu` WHERE `menu_id` >= 5000 AND `menu_id` < 6000;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- 设备事件接入表（FR-INT-20：物联网模块契约，幂等落库）
+-- ----------------------------
+DROP TABLE IF EXISTS `mes_int_device_event`;
+CREATE TABLE `mes_int_device_event` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `event_id` varchar(64) NOT NULL COMMENT '事件唯一标识（幂等键）',
+  `equipment_code` varchar(64) NOT NULL COMMENT '设备/工位编码',
+  `event_type` varchar(16) NOT NULL COMMENT '事件类型：STATE/COUNT/PROCESS/ALARM',
+  `string_value` varchar(128) DEFAULT NULL COMMENT '字符值（状态码/报警码）',
+  `numeric_value` decimal(18,6) DEFAULT NULL COMMENT '数值（计数/过程值）',
+  `tag_code` varchar(64) DEFAULT NULL COMMENT '采集点编码',
+  `source_time` datetime DEFAULT NULL COMMENT '源时间戳',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '接收时间',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志',
+  `tenant_id` bigint DEFAULT '1' COMMENT '租户ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_devevt_id` (`event_id`, `tenant_id`),
+  KEY `idx_devevt_equip` (`equipment_code`, `source_time`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '设备事件';
+
+-- 集成权限（ERP/物联网接入共用，生产环境应配专用集成账号）
+INSERT INTO `sys_menu` VALUES (5090, '集成接入', 'mes_integration', NULL, NULL, 5000, NULL, '0', 99, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5090);
