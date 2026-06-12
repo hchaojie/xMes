@@ -1,6 +1,8 @@
 package com.pig4cloud.pig.mes.quality.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.mes.core.api.entity.MdBom;
+import com.pig4cloud.pig.mes.core.api.entity.MdBomLine;
 import com.pig4cloud.pig.mes.core.api.entity.MdMaterial;
 import com.pig4cloud.pig.mes.execution.api.entity.WoOrder;
 import com.pig4cloud.pig.mes.execution.api.entity.WoTask;
@@ -28,6 +30,16 @@ public interface ExecReadMapper {
 
 	@Mapper
 	interface MaterialReadMapper extends BaseMapper<MdMaterial> {
+
+	}
+
+	@Mapper
+	interface BomReadMapper extends BaseMapper<MdBom> {
+
+	}
+
+	@Mapper
+	interface BomLineReadMapper extends BaseMapper<MdBomLine> {
 
 	}
 

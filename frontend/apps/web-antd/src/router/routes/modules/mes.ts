@@ -135,6 +135,35 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    meta: {
+      icon: 'lucide:boxes',
+      order: 14,
+      title: '物料管理',
+    },
+    name: 'MesMaterial',
+    path: '/mes/material',
+    children: [
+      {
+        name: 'MesMaterialLot',
+        path: 'lot',
+        component: () => import('#/views/mes/material/lot/index.vue'),
+        meta: {
+          icon: 'lucide:package-search',
+          title: '批次台账',
+        },
+      },
+      {
+        name: 'MesMaterialTrace',
+        path: 'trace',
+        component: () => import('#/views/mes/material/trace/index.vue'),
+        meta: {
+          icon: 'lucide:git-branch',
+          title: '批次追溯',
+        },
+      },
+    ],
+  },
 ];
 
 export default routes;

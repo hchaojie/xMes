@@ -1,4 +1,4 @@
-package com.pig4cloud.pig.mes.quality;
+package com.pig4cloud.pig.mes;
 
 import com.pig4cloud.pig.common.security.annotation.EnablePigResourceServer;
 import com.pig4cloud.pig.common.swagger.annotation.EnableOpenApi;
@@ -16,6 +16,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableOpenApi("mes-quality")
 @EnablePigResourceServer
 @EnableDiscoveryClient
+// 主类位于 com.pig4cloud.pig.mes 包：自动覆盖 quality 与 material 两个子包的组件与 Mapper 扫描
 @SpringBootApplication
 public class XmesQualityApplication {
 
