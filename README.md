@@ -4,11 +4,64 @@
 
 - **后端**：[pig-mesh/pig](https://github.com/pig-mesh/pig)（Spring Cloud / Spring Boot 3.x / Spring Authorization Server / MyBatis-Plus / Nacos）
 - **前端**：[vbenjs/vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)（Vue 3 / Vite / Ant Design Vue / TypeScript）
-- **产品参照**：MPDV HYDRA X 的模块划分与功能设计；车间对象模型参照 IEC 62264（ISA-95）标准
+- **产品参照**：MPDV 产品设计（依据用户提供的《MPDV Product Specification》——HYDRA X mApps / FEDRA 2 APS / MIP 平台逐项规格，及《MIP 交流》平台介绍）；车间对象模型参照 MIP ViPR/MBO 思想与 IEC 62264（ISA-95）标准
 
 ## 当前状态
 
-📋 **需求规划阶段** —— 尚未开始编码。本仓库当前只包含产品需求文档，待评审确认后进入实现阶段。
+✅ **Phase 1（M1~M3）全部完成**（需求文档评审冻结、决策项 Q1~Q7 确认、各切片均经端到端联调验证）
+
+| 里程碑 | 内容 | 状态 |
+| --- | --- | --- |
+| M1 | 平台骨架（pig/vben）+ 车间建模 + 主数据 | ✅ 完成（已通过端到端联调：登录→权限→建模/主数据全链路 CRUD 与状态机） |
+| M2 | 工单 + 排程 + 报工 + 工位终端 | ✅ 完成（工单状态机 / 自研甘特排程（有限产能）/ 不可变报工事件 / 全屏工位终端，均通过 E2E 联调） |
+| M3 | 质量 + 追溯 + 看板 + ERP 联调 | ✅ 完成（质量门闭环 / 批次追溯 / 监控墙与 KPI / ERP 工单接收·完工回传·设备事件接入契约，均通过 E2E 联调） |
+
+## 仓库结构
+
+```
+xMes/
+├── docs/        需求文档（00~12）
+├── backend/     后端：pig 4.0 骨架（Spring Boot 4 / Spring Cloud 2025）+ xmes 业务模块
+│   ├── pig-*            pig 原生服务（auth/gateway/upms/register/boot...）
+│   ├── xmes/
+│   │   ├── xmes-core-api    实体与对外 API 定义
+│   │   └── xmes-core-biz    平台与建模服务（端口 4100）
+│   └── db/
+│       ├── pig.sql              pig 系统表与基础数据（先执行）
+│       ├── xmes_core.sql        车间建模表 + 菜单权限
+│       └── xmes_masterdata.sql  物料/BOM/工作计划表 + 菜单权限
+└── frontend/    前端：vue-vben-admin v5 monorepo（保留 apps/web-antd 作为管理端）
+    └── apps/web-antd/src/{api,views,router/routes/modules}/mes/...
+```
+
+## 本地开发
+
+后端（两种启动方式）：
+
+```bash
+cd backend
+mvn install -DskipTests -Dspring-javaformat.skip=true
+# 方式一：单体模式（开发推荐，已聚合 xmes-core）——先启动 pig-register(Nacos)，再启动 pig-boot
+# 方式二：微服务模式——依次启动 pig-register / pig-gateway / pig-auth / pig-upms-biz / xmes-core-biz
+# 数据库：执行 db/pig.sql 与 db/xmes_core.sql；Nacos 配置执行 db/pig_config.sql
+```
+
+前端：
+
+```bash
+cd frontend
+pnpm install
+pnpm dev:antd        # 管理端，默认 http://localhost:5666
+```
+
+> 网关路由：xmes-core 注册名为 `xmes-core-biz`，需在网关路由规则中将 `/mes/**` 转发到该服务（单体模式无需配置）。
+
+### 联调注意事项（已在本仓库验证通过）
+
+- **单体（boot）模式**：`mvn install -Pboot -DskipTests` 后直接 `java -jar pig-boot/target/pig-boot.jar`，无需 Nacos；上下文路径为 `/admin`，MES 接口位于 `/admin/modeling/**`、`/admin/masterdata/**`，前端 vite 代理已按此配置（`/api/mes/** → /admin/**`）
+- **MySQL 大小写**：若服务器 `lower_case_table_names=0`（Linux 默认），需将 `qrtz_*` 表重命名为大写 `QRTZ_*`，或启动 MySQL 时加 `--lower-case-table-names=1`（pig 官方 docker-compose 的做法）
+- **登录**：开发期前端使用 `test:test` OAuth2 客户端（免图形验证码），密码 AES-128-CFB 加密（密钥=后端 `security.encodeKey`）；生产切换 `pig` 客户端并接入验证码
+- **MES 菜单**：占用 `sys_menu` 5000~5099 段（pig 自身占用 4000~4014），按钮权限码前缀 `mes_*`
 
 ## 需求文档目录
 
