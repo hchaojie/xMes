@@ -104,6 +104,15 @@ const routes: RouteRecordRaw[] = [
           title: '作业排程',
         },
       },
+      {
+        name: 'MesAnalyticsMonitor',
+        path: 'monitor',
+        component: () => import('#/views/mes/analytics/monitor/index.vue'),
+        meta: {
+          icon: 'lucide:monitor-dot',
+          title: '生产监控',
+        },
+      },
     ],
   },
   {

@@ -144,3 +144,8 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5120), (1, 5121), 
 -- 工位终端权限（终端页面 + 队列接口；报工复用 mes_booking_operate）
 INSERT INTO `sys_menu` VALUES (5130, '工位终端', 'mes_terminal_use', '/terminal', NULL, 5100, 'iconfont icon-gongju', '1', 3, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5130);
+
+-- 生产监控菜单与权限
+INSERT INTO `sys_menu` VALUES (5140, '生产监控', NULL, '/mes/analytics/monitor/index', NULL, 5100, 'iconfont icon-shouye', '1', 4, '0', '0', '0', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_menu` VALUES (5141, '监控查看', 'mes_monitor_view', NULL, NULL, 5140, NULL, '1', 1, '0', '0', '1', ' ', NOW(), ' ', NOW(), '0');
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (1, 5140), (1, 5141);
