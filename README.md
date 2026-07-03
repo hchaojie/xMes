@@ -10,11 +10,14 @@
 
 ✅ **Phase 1（M1~M3）全部完成**（需求文档评审冻结、决策项 Q1~Q7 确认、各切片均经端到端联调验证）
 
+🚧 **Phase 2 进行中**——首个切片 M4（设备维护）已交付代码，待联调
+
 | 里程碑 | 内容 | 状态 |
 | --- | --- | --- |
 | M1 | 平台骨架（pig/vben）+ 车间建模 + 主数据 | ✅ 完成（已通过端到端联调：登录→权限→建模/主数据全链路 CRUD 与状态机） |
 | M2 | 工单 + 排程 + 报工 + 工位终端 | ✅ 完成（工单状态机 / 自研甘特排程（有限产能）/ 不可变报工事件 / 全屏工位终端，均通过 E2E 联调） |
 | M3 | 质量 + 追溯 + 看板 + ERP 联调 | ✅ 完成（质量门闭环 / 批次追溯 / 监控墙与 KPI / ERP 工单接收·完工回传·设备事件接入契约，均通过 E2E 联调） |
+| M4 | 维护保养与点检（FR-RES-31~33、35、36） | 🚧 代码完成：维护计划（周期+检查表）/ 维护工单状态机（待接单→维修中→待验证→关闭）/ 故障报修 / 点检 NG 自动报修 / 监控墙 MAINT 联动 / MTBF·MTTR·故障 Pareto·保养达成率 |
 
 ## 仓库结构
 
@@ -24,12 +27,17 @@ xMes/
 ├── backend/     后端：pig 4.0 骨架（Spring Boot 4 / Spring Cloud 2025）+ xmes 业务模块
 │   ├── pig-*            pig 原生服务（auth/gateway/upms/register/boot...）
 │   ├── xmes/
-│   │   ├── xmes-core-api    实体与对外 API 定义
-│   │   └── xmes-core-biz    平台与建模服务（端口 4100）
+│   │   ├── xmes-core-api        实体与对外 API 定义
+│   │   ├── xmes-core-biz        平台/建模/主数据/设备维护服务（端口 4100）
+│   │   ├── xmes-execution-*     生产执行服务（工单/排程/报工/终端/分析/ERP）
+│   │   └── xmes-quality-*       质量与物料服务（检验/批次/追溯）
 │   └── db/
-│       ├── pig.sql              pig 系统表与基础数据（先执行）
-│       ├── xmes_core.sql        车间建模表 + 菜单权限
-│       └── xmes_masterdata.sql  物料/BOM/工作计划表 + 菜单权限
+│       ├── pig.sql                  pig 系统表与基础数据（先执行）
+│       ├── xmes_core.sql            车间建模表 + 菜单权限
+│       ├── xmes_masterdata.sql      物料/BOM/工作计划表 + 菜单权限
+│       ├── xmes_execution.sql       工单/作业/报工表 + 菜单权限
+│       ├── xmes_quality.sql         质量/批次/追溯表 + 菜单权限
+│       └── xmes_maintenance.sql     维护计划/维护工单表 + 菜单权限（Phase 2 M4）
 └── frontend/    前端：vue-vben-admin v5 monorepo（保留 apps/web-antd 作为管理端）
     └── apps/web-antd/src/{api,views,router/routes/modules}/mes/...
 ```
@@ -61,7 +69,7 @@ pnpm dev:antd        # 管理端，默认 http://localhost:5666
 - **单体（boot）模式**：`mvn install -Pboot -DskipTests` 后直接 `java -jar pig-boot/target/pig-boot.jar`，无需 Nacos；上下文路径为 `/admin`，MES 接口位于 `/admin/modeling/**`、`/admin/masterdata/**`，前端 vite 代理已按此配置（`/api/mes/** → /admin/**`）
 - **MySQL 大小写**：若服务器 `lower_case_table_names=0`（Linux 默认），需将 `qrtz_*` 表重命名为大写 `QRTZ_*`，或启动 MySQL 时加 `--lower-case-table-names=1`（pig 官方 docker-compose 的做法）
 - **登录**：开发期前端使用 `test:test` OAuth2 客户端（免图形验证码），密码 AES-128-CFB 加密（密钥=后端 `security.encodeKey`）；生产切换 `pig` 客户端并接入验证码
-- **MES 菜单**：占用 `sys_menu` 5000~5099 段（pig 自身占用 4000~4014），按钮权限码前缀 `mes_*`
+- **MES 菜单**：占用 `sys_menu` 5000~5499 段（pig 自身占用 4000~4014；5000 建模/主数据、5100 生产执行、5200 质量、5300 物料、5400 设备维护），按钮权限码前缀 `mes_*`
 
 ## 需求文档目录
 

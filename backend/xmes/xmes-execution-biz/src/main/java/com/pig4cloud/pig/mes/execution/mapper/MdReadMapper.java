@@ -7,6 +7,7 @@ import com.pig4cloud.pig.mes.core.api.entity.MdRouting;
 import com.pig4cloud.pig.mes.core.api.entity.MdRoutingOperation;
 import com.pig4cloud.pig.mes.core.api.entity.MdWorkCenter;
 import com.pig4cloud.pig.mes.core.api.entity.MdWorkplace;
+import com.pig4cloud.pig.mes.core.api.entity.MntOrder;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -46,6 +47,11 @@ public interface MdReadMapper {
 
 	@Mapper
 	interface CalendarDayReadMapper extends BaseMapper<MdCalendarDay> {
+
+	}
+
+	@Mapper
+	interface MntOrderReadMapper extends BaseMapper<MntOrder> {
 
 	}
 

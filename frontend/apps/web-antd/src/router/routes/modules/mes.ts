@@ -173,6 +173,44 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    meta: {
+      icon: 'lucide:wrench',
+      order: 15,
+      title: '设备维护',
+    },
+    name: 'MesMaintenance',
+    path: '/mes/maintenance',
+    children: [
+      {
+        name: 'MesMaintenancePlan',
+        path: 'plan',
+        component: () => import('#/views/mes/maintenance/plan/index.vue'),
+        meta: {
+          icon: 'lucide:calendar-check',
+          title: '维护计划',
+        },
+      },
+      {
+        name: 'MesMaintenanceOrder',
+        path: 'order',
+        component: () => import('#/views/mes/maintenance/order/index.vue'),
+        meta: {
+          icon: 'lucide:hammer',
+          title: '维护工单',
+        },
+      },
+      {
+        name: 'MesMaintenanceAnalysis',
+        path: 'analysis',
+        component: () => import('#/views/mes/maintenance/analysis/index.vue'),
+        meta: {
+          icon: 'lucide:activity',
+          title: '维护分析',
+        },
+      },
+    ],
+  },
 ];
 
 export default routes;
