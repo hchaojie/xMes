@@ -61,9 +61,9 @@ public class MntPlanServiceImpl extends ServiceImpl<MntPlanMapper, MntPlan> impl
 	@Transactional(rollbackFor = Exception.class)
 	public void saveWithItems(MntPlanDTO dto) {
 		Assert.notEmpty(dto.getItems(), "标准作业项不能为空");
-		if (dto.getNextDueDate() == null) {
-			dto.setNextDueDate(LocalDate.now().plusDays(dto.getCycleValue() != null
-					&& "DAY".equals(dto.getCycleType()) ? dto.getCycleValue() : 0));
+		// DAY 周期未填到期日时按周期顺延；RUNTIME/OUTPUT 周期到期日由手工/后期物联网数据维护
+		if (dto.getNextDueDate() == null && "DAY".equals(dto.getCycleType()) && dto.getCycleValue() != null) {
+			dto.setNextDueDate(LocalDate.now().plusDays(dto.getCycleValue()));
 		}
 		this.save(dto);
 		insertItems(dto.getId(), dto.getItems());

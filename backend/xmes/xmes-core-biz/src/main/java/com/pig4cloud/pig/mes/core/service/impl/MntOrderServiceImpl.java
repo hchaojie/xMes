@@ -285,7 +285,10 @@ public class MntOrderServiceImpl extends ServiceImpl<MntOrderMapper, MntOrder> i
 			.likeRight(MntOrder::getOrderNo, prefix)
 			.orderByDesc(MntOrder::getOrderNo)
 			.last("limit 1"), false);
-		int seq = last == null ? 0 : Integer.parseInt(last.getOrderNo().substring(prefix.length()));
+		int seq = 0;
+		if (last != null && last.getOrderNo().length() > prefix.length()) {
+			seq = Integer.parseInt(last.getOrderNo().substring(prefix.length()));
+		}
 		return prefix + String.format("%04d", seq + 1);
 	}
 
