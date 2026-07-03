@@ -3,6 +3,7 @@ package com.pig4cloud.pig.mes.execution.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.pig4cloud.pig.mes.core.api.entity.MdMaterial;
 import com.pig4cloud.pig.mes.core.api.entity.MdWorkplace;
+import com.pig4cloud.pig.mes.core.api.entity.MntOrder;
 import com.pig4cloud.pig.mes.execution.api.entity.WoBooking;
 import com.pig4cloud.pig.mes.execution.api.entity.WoOrder;
 import com.pig4cloud.pig.mes.execution.api.entity.WoTask;
@@ -48,6 +49,8 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
 	private final MdReadMapper.MaterialReadMapper materialReadMapper;
 
+	private final MdReadMapper.MntOrderReadMapper mntOrderReadMapper;
+
 	@Override
 	public List<Map<String, Object>> workplaceBoard() {
 		List<MdWorkplace> workplaces = workplaceReadMapper.selectList(
@@ -57,6 +60,12 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 			.isNotNull(WoTask::getWorkplaceId)
 			.in(WoTask::getTaskStatus, List.of("RUNNING", "PAUSED", "DISPATCHED", "SCHEDULED")));
 		Map<Long, List<WoTask>> byWp = active.stream().collect(Collectors.groupingBy(WoTask::getWorkplaceId));
+		// 维修中的维护工单 → 设备 MAINT 状态（FR-RES-33）
+		java.util.Set<Long> maintWp = mntOrderReadMapper
+			.selectList(Wrappers.<MntOrder>lambdaQuery().eq(MntOrder::getOrderStatus, "IN_PROGRESS"))
+			.stream()
+			.map(MntOrder::getWorkplaceId)
+			.collect(Collectors.toSet());
 		Map<Long, WoOrder> orderMap = active.isEmpty() ? Map.of()
 				: orderMapper.selectBatchIds(active.stream().map(WoTask::getOrderId).distinct().toList())
 					.stream()
@@ -93,7 +102,8 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 				.min(Comparator.comparing(t -> "RUNNING".equals(t.getTaskStatus()) ? 0
 						: "PAUSED".equals(t.getTaskStatus()) ? 1 : 2))
 				.orElse(null);
-			String state = current == null ? "IDLE"
+			String state = maintWp.contains(wp.getId()) ? "MAINT"
+					: current == null ? "IDLE"
 					: switch (current.getTaskStatus()) {
 						case "RUNNING" -> "RUNNING";
 						case "PAUSED" -> "PAUSED";

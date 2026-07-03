@@ -22,7 +22,7 @@ interface WorkplaceCard {
   workplaceId: string;
   code: string;
   name: string;
-  state: 'IDLE' | 'PAUSED' | 'RUNNING' | 'WAITING';
+  state: 'IDLE' | 'MAINT' | 'PAUSED' | 'RUNNING' | 'WAITING';
   orderNo?: string;
   operationNo?: string;
   operationName?: string;
@@ -36,6 +36,7 @@ const STATE_META: Record<string, { bg: string; label: string }> = {
   RUNNING: { label: '运行', bg: '#52c41a' },
   PAUSED: { label: '暂停', bg: '#faad14' },
   WAITING: { label: '待机', bg: '#13c2c2' },
+  MAINT: { label: '维修', bg: '#f5222d' },
   IDLE: { label: '空闲', bg: '#bfbfbf' },
 };
 
