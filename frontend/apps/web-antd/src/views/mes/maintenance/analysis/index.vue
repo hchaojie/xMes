@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Dayjs } from 'dayjs';
+
 import type { MntAnalysis } from '#/api/mes/maintenance';
 
 import { onMounted, ref } from 'vue';
@@ -15,7 +17,7 @@ import {
   Statistic,
   Table,
 } from 'ant-design-vue';
-import dayjs, { type Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 import { getMntAnalysis } from '#/api/mes/maintenance';
 

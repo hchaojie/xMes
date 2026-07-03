@@ -55,7 +55,10 @@ const STATUS_META: Record<string, { color: string; label: string }> = {
 const loading = ref(false);
 const dataSource = ref<MntOrder[]>([]);
 const pagination = reactive({ current: 1, pageSize: 10, total: 0 });
-const filter = reactive<{ orderStatus?: string; orderType?: string }>({});
+const filter = reactive<{
+  orderStatus?: string;
+  orderType?: MntOrder['orderType'];
+}>({});
 const workplaceOptions = ref<any[]>([]);
 
 const columns = [
